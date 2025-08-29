@@ -52,8 +52,17 @@ def parse_task(args, cfg, cfg_train, sim_params, agent_index):
         print("Python")
 
         try:
-            task = eval(args.task)(
-                cfg=cfg,
+            # 在这里初始化了 ShadowHandGrasp
+            print("\n")
+            print("\ncfg:\n", cfg)
+            print("\nsim_params:\n", sim_params)
+            print("\nargs.physics_engine:\n", args.physics_engine)
+            print("\nargs.device:\n", args.device)
+            print("\ndevice_id:\n", device_id)
+            print("\nargs.headless:\n", args.headless)
+            print("\n")
+            task = eval(args.task)( # 将字符串（"ShadowHandGrasp" 或 "ShadowHandRandomLoadVision"）解析为对应的类名，并调用其构造函数
+                cfg=cfg,                
                 sim_params=sim_params,
                 physics_engine=args.physics_engine,
                 device_type=args.device,

@@ -25,15 +25,20 @@ from isaacgym import gymapi
 class ShadowHandGrasp(BaseTask):
     def __init__(self, cfg, sim_params, physics_engine, device_type, device_id, headless,
                  agent_index=[[[0, 1, 2, 3, 4, 5]], [[0, 1, 2, 3, 4, 5]]], is_multi_agent=False):
-
+        
+        print("\nShadowHandGrasp init.\n")
+        
         self.cfg = cfg
+        
         self.sim_params = sim_params
         self.physics_engine = physics_engine
         self.agent_index = agent_index
         self.is_multi_agent = is_multi_agent
+        
         self.randomize = self.cfg["task"]["randomize"]
         self.randomization_params = self.cfg["task"]["randomization_params"]
         self.aggregate_mode = self.cfg["env"]["aggregateMode"]
+        
         self.dist_reward_scale = self.cfg["env"]["distRewardScale"]
         self.rot_reward_scale = self.cfg["env"]["rotRewardScale"]
         self.action_penalty_scale = self.cfg["env"]["actionPenaltyScale"]
@@ -42,22 +47,29 @@ class ShadowHandGrasp(BaseTask):
         self.fall_dist = self.cfg["env"]["fallDistance"]
         self.fall_penalty = self.cfg["env"]["fallPenalty"]
         self.rot_eps = self.cfg["env"]["rotEps"]
+        
         self.vel_obs_scale = 0.2  # scale factor of velocity based observations
         self.force_torque_obs_scale = 10.0  # scale factor of velocity based observations
+        
         self.reset_position_noise = self.cfg["env"]["resetPositionNoise"]
         self.reset_rotation_noise = self.cfg["env"]["resetRotationNoise"]
         self.reset_dof_pos_noise = self.cfg["env"]["resetDofPosRandomInterval"]
         self.reset_dof_vel_noise = self.cfg["env"]["resetDofVelRandomInterval"]
+        
         self.shadow_hand_dof_speed_scale = self.cfg["env"]["dofSpeedScale"]
         self.use_relative_control = self.cfg["env"]["useRelativeControl"]
         self.act_moving_average = self.cfg["env"]["actionsMovingAverage"]
+        
         self.debug_viz = self.cfg["env"]["enableDebugVis"]
+        
         self.max_episode_length = self.cfg["env"]["episodeLength"]
         self.reset_time = self.cfg["env"].get("resetTime", -1.0)
         self.print_success_stat = self.cfg["env"]["printNumSuccesses"]
         self.max_consecutive_successes = self.cfg["env"]["maxConsecutiveSuccesses"]
         self.av_factor = self.cfg["env"].get("averFactor", 0.01)
         print("Averaging factor: ", self.av_factor)
+        
+        # ----------
 
         self.transition_scale = self.cfg["env"]["transition_scale"]
         self.orientation_scale = self.cfg["env"]["orientation_scale"]
@@ -67,29 +79,38 @@ class ShadowHandGrasp(BaseTask):
             self.max_episode_length = int(round(self.reset_time / (control_freq_inv * self.sim_params.dt)))
             print("Reset time: ", self.reset_time)
             print("New episode length: ", self.max_episode_length)
+        
         self.obs_type = self.cfg["env"]["observationType"]
         print("Obs type:", self.obs_type)
 
         num_obs = 236 + 64
         self.num_obs_dict = {
             "full_state": num_obs
-        }
+        }        
         self.num_hand_obs = 66 + 95 + 24 + 6  # 191 =  22*3 + (65+30) + 24
+        
+        # ----------
+        
         self.up_axis = 'z'
+        
         self.fingertips = ["robot0:ffdistal", "robot0:mfdistal", "robot0:rfdistal", "robot0:lfdistal",
                            "robot0:thdistal"]
         self.hand_center = ["robot0:palm"]
         self.num_fingertips = len(self.fingertips) 
+        
         self.use_vel_obs = False
         self.fingertip_obs = True
         self.asymmetric_obs = self.cfg["env"]["asymmetric_observations"]
+        
         num_states = 0
         if self.asymmetric_obs:
             num_states = 211
+        
         self.cfg["env"]["numObservations"] = self.num_obs_dict[self.obs_type]
         self.cfg["env"]["numStates"] = num_states
         self.num_agents = 1
         self.cfg["env"]["numActions"] = 24 
+        
         self.cfg["device_type"] = device_type
         self.cfg["device_id"] = device_id
         self.cfg["headless"] = headless

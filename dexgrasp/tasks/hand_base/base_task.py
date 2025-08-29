@@ -22,6 +22,9 @@ import torch
 class BaseTask():
 
     def __init__(self, cfg, enable_camera_sensors=False, is_meta=False, task_num=0):
+        
+        print("\nBaseTask init.\n")
+        
         self.id = -1
         self.gym = gymapi.acquire_gym()
 

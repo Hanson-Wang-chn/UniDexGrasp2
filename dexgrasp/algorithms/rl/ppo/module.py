@@ -131,7 +131,32 @@ class ActorCritic(nn.Module):
         self.critic = nn.Sequential(*critic_layers)
 
         print(self.actor)
+        # When running state & train: 
+        # Sequential(
+        #   (0): Linear(in_features=300, out_features=1024, bias=True)
+        #   (1): ELU(alpha=1.0)
+        #   (2): Linear(in_features=1024, out_features=1024, bias=True)
+        #   (3): ELU(alpha=1.0)
+        #   (4): Linear(in_features=1024, out_features=512, bias=True)
+        #   (5): ELU(alpha=1.0)
+        #   (6): Linear(in_features=512, out_features=512, bias=True)
+        #   (7): ELU(alpha=1.0)
+        #   (8): Linear(in_features=512, out_features=24, bias=True)
+        # )
+               
         print(self.critic)
+        # When running state & train: 
+        # Sequential(
+        #   (0): Linear(in_features=300, out_features=1024, bias=True)
+        #   (1): ELU(alpha=1.0)
+        #   (2): Linear(in_features=1024, out_features=1024, bias=True)
+        #   (3): ELU(alpha=1.0)
+        #   (4): Linear(in_features=1024, out_features=512, bias=True)
+        #   (5): ELU(alpha=1.0)
+        #   (6): Linear(in_features=512, out_features=512, bias=True)
+        #   (7): ELU(alpha=1.0)
+        #   (8): Linear(in_features=512, out_features=1, bias=True)
+        # )
 
         # Action noise
         self.log_std = nn.Parameter(np.log(initial_std) * torch.ones(*actions_shape))

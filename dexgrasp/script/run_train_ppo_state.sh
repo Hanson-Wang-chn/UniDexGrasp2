@@ -6,6 +6,6 @@ python train.py \
 --rl_device=cuda:0 \
 --sim_device=cuda:0 \
 --logdir=logs/test \
---headless \
+# --headless \
 --model_dir=example_model/state_based_model.pt #\ # if you want to finetune on previous model
 #--test

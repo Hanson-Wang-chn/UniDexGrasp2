@@ -41,7 +41,7 @@ env:
   fallDistance: 0.4
   fallPenalty: 0.0
 
-  objectType: "pot" 
+  # objectType: "pot"
   observationType: "full_state"
   handAgentIndex: "[[0, 1, 2, 3, 4, 5]]"
   asymmetric_observations: False
@@ -56,6 +56,7 @@ env:
     assetFileNameBall: "urdf/objects/ball.urdf"
     assetFileNameEgg: "mjcf/open_ai_assets/hand/egg.xml"
     assetFileNamePen: "mjcf/open_ai_assets/hand/pen.xml"
+    assetFileNameFranka: "urdf/franka_description/robots/franka_panda_gripper.urdf"
 
 task:
   randomize: False
